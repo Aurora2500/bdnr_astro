@@ -1,0 +1,83 @@
+\documentclass[spanish]{article}
+\usepackage{csquotes}
+\usepackage[spanish]{babel}
+\selectlanguage{spanish}
+\usepackage[utf8]{inputenc}
+\usepackage{authblk}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\usepackage[
+	backend=biber,
+	style=numeric,
+]{biblatex}
+
+\usepackage{enumitem}
+\usepackage{extarrows}
+\usepackage{mathtools}
+\usepackage{systeme}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{listingsutf8}
+
+\usepackage{multirow}
+\usepackage{minted}
+
+\graphicspath{ {./img/} }
+
+%\addbibresource{./sources.bib}
+
+\newcommand{\cimg}[2]{
+\begin{figure}[H]
+	\center
+		\includegraphics[width=#2\linewidth]{#1}
+\end{figure}
+}
+
+\begin{document}
+
+\begin{titlepage}
+	\centering
+	{\huge\bfseries Astro \par}
+	\vspace{1cm}
+	{\scshape\Large Placeholder \par\tt{placeholder@alu.ulpgc.es}\par}
+	\vspace{1cm}
+	{\scshape\Large Pablo Guilló \par\tt{placeholder@alu.ulpgc.es}\par}
+	\vspace{1cm}
+	{\scshape\Large Aurora Zuoris \par\tt{aurora.zuoris101@alu.ulpgc.es}\par}
+	\vspace{3cm}
+	{\scshape\large Bases de Datos No Relacionales \par}
+	\vspace{1cm}
+	{\scshape\large Grado en Ciencias e Ingeniería de Datos\par}
+	\vspace{1cm}
+	{\scshape\large Escuela de Ingeniería Informática\par}
+	\vspace{1cm}
+	{\scshape\large Universidad de Las Palmas de Gran Canaria\par}
+	\vspace{1cm}
+	{\scshape\large \today{} \par}
+\end{titlepage}
+
+\tableofcontents
+
+\section{Introcucción}
+
+\section{Descripción del sistema}
+
+\section{Estado del arte}
+
+\section{Analysis y selección de herramientas}
+
+\section{Diseño del sistema}
+
+\section{Incorporación de los datos a la BBDDNR}
+
+\section{Consultas realizadas para cumplir objetivos}
+
+\section{Productos finales obtenidos}
+
+\section{Trabajo futuro}
+
+\section{Conclusiones}
+
+\end{document}
