@@ -62,11 +62,43 @@
 
 \section{Introcucción}
 
+El proyecto Astro consiste en un programa capable de interactuar dinamicamente con la API de space traders,
+un juego de simulación de comercio especial. En este sentido, se intenta simular un sistema de comercio
+ejemplar que podría existir en un mundo real.
+Dado el enfoque de la asignatura, se hace un uso intensivo de bases de datos no relacionales para
+cumplir con los objectivos del proyecto.
+
 \section{Descripción del sistema}
 
 \section{Estado del arte}
 
 \section{Analysis y selección de herramientas}
+
+Para el desarollo del código se ha optado por TypeScript ejecutado en Node.js.
+TypeScript es un lenguaje de programación basado en JavaScript que añade tipos estáticos opcionales a este.
+Esta opción se ha tomado dado que Node.js es un entorno de ejecución de JavaScript basado en un
+bucle de eventos asíncronos, lo que lo hace ideal para situaciones con un alto número de operaciones de entrada/salida, como es el caso aquí
+con la interacción con la API y con las bases de datos.
+Además, el lenguaje es muy popular dandole un gran ecosistema de librerias ya desarolladas para facilitar el uso de las bases de datos utilizadas,
+y además es muy fácil desarollar y iterar rápidamente con el progreso del proyecto.
+
+En cuanto a las bases de datos, se ha optado por utilizar Redis, MongoDB y Cassandra.
+Redis se ha utilizado para almacenar datos necesarios para el funcionamiento del programa, como por ejemplo los tokens de autenticación.
+También se usa para un acceso rápido a datos que se accedan frecuentemente.
+
+MongoDB se utiliza para representar los datos necesarios para las operaciones que se llevan a cabo, por ejemplo el estado de las naves,
+los diferentes mercados y los precios de los productos en cada uno de ellos.
+MongoDB se usa por su facilidad de uso y su flexibilidad, ya que los datos que se almacenan pueden cambiar con el tiempo.
+Además, almacenando todos los datos necesarios para las operaciones significa que el programa
+se puede parar y reiniciar sin perder el estado de las operaciones.
+
+Por último, Cassandra se utiliza para almacenar datos históricos de las acciones realizadas y
+de precios de productos en los diferentes mercados a lo largo del tiempo.
+Se utiliza como una base de datos de solo escritura, ya que los datos no se modifican una vez escritos
+ya que representan las acciones realizadas en el pasado, con lo que se conservan para futuros análisis.
+Se ha optado por Cassandra para este propósito ya que es una base de datos distribuida y escalable,
+permitiendo almacenar grandes cantidades de datos y realizar consultas rápidas sobre ellos,
+algo que puede ser util con el paso del tiempo ya que esta seguirá creciendo.
 
 \section{Diseño del sistema}
 
