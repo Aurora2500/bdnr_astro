@@ -64,11 +64,11 @@ const list_ships = async () => {
 	const res = await client.get("my/ships", {
 		headers: {
 			"Authorization": `Bearer ${token}`
-		}
+		},
 	})
+	console.log(res.body)
 	const data = Ships.parse(res.body);
-	
-
+	return data.data
 };
 
 const list_contracts = async () => {
@@ -81,10 +81,8 @@ const list_contracts = async () => {
 			"Authorization": `Bearer ${token}`
 		}
 	});
-	console.log(res.body);
 	const data = Contracts.safeParse(res.body);
 	if (data.success) return data.data.data;
-	console.log(JSON.stringify(data.error));
 	throw new Error(data.error.message)
 
 };

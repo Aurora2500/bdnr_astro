@@ -34,7 +34,35 @@ export const AgentData = DataWrapper(z.object({
 
 export const Ships = Paged(z.object({
 	symbol: z.string(),
-	
+	registration: z.object({
+		name: z.string(),
+		factionSymbol: z.string(),
+		role: z.string(),
+	}),
+	nav: z.object({
+		systemSymbol: z.string(),
+		waypointSymbol: z.string(),
+		status: z.string(),
+		flightMode: z.string(),
+	}),
+	cargo: z.object({
+		capacity: z.number(),
+		units: z.number(),
+		inventory: z.object({
+			symbol: z.string(),
+			name: z.string(),
+			description: z.string(),
+			units: z.number(),
+		}).array(),
+	}),
+	fuel: z.object({
+		current: z.number(),
+		capacity: z.number(),
+		consumed: z.object({
+			amount: z.number(),
+			timestamp: z.string(),
+		}),
+	}),
 }));
 
 export const Contracts = Paged(z.object({

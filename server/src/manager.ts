@@ -35,9 +35,6 @@ export const manager = {
 		account_objects.token = token;
 	},
 
-	list_ships: async () => {
-		
-	},
-
+	list_ships: async () => await api.list_ships(),
 	list_contracts: async () => await api.list_contracts(),
 }

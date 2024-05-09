@@ -6,6 +6,53 @@ type NotNull<T> = T extends null ? never : T;
 
 type Contract = NotNull<InferOutput["contracts"]["list"]>[number];
 
+type Ship = NotNull<InferOutput["ships"]["list"]>[number];
+
+type ShipCardProps = {
+	ship: Ship;
+};
+
+const ShipCard: FC<ShipCardProps> = ({ ship }) => {
+	return (
+		<div
+			className="flex flex-col bg-teal-200 rounded-md p-2"
+		>
+			<p className="text-lg font-semibold mb-2">{ship.registration.name}</p>
+			<p className="flex flex-row justify-between">
+				<span>Gasolina:</span>
+				<span className="mr-5">{ship.fuel.current}/{ship.fuel.capacity}</span>
+			</p>
+			<p className="flex flex-row justify-between">
+				<span>{normalize_symols(ship.nav.status)}</span>
+				<span className="mr-5">{ship.nav.waypointSymbol}</span>
+			</p>
+		</div>
+	)
+};
+
+const ShipList = () => {
+	const { data:ships } = trpc.ships.list.useQuery();
+
+	return (
+		<div
+			className="flex flex-col bg-slate-200 p-2 rounded-lg w-60"
+		>
+			<h3
+				className="text-2xl text-teal-700 font-semibold"
+			>Naves</h3>
+			<div
+				className="flex flex-col gap-2"
+			>
+			{
+				ships?.map((ship) => (
+					<ShipCard ship={ship} />
+				)) 
+			}
+			</div>
+		</div>
+	);
+}
+
 type ContractCardProps = {
 	contract: Contract;
 };
@@ -38,6 +85,7 @@ const ContractCard: FC<ContractCardProps> = ({ contract }) => {
 
 const ContractsList = () => {
 	const { data:contracts } = trpc.contracts.list.useQuery();
+
 	return (
 		<div
 			className="flex flex-col bg-slate-200 p-2 rounded-lg w-60"
@@ -57,9 +105,10 @@ const ContractsList = () => {
 export const Dashboard = () => {
 	return (
 		<div
-			className="flex flex-row p-10"
+			className="flex flex-row p-10 gap-4"
 		>
 			<ContractsList />
+			<ShipList />
 		</div>
 	)
 }
