@@ -1,11 +1,23 @@
-import { get } from "./redis_store.js";
-import { db } from "./mongo_store.js";
-import { client } from "./cassandra_store.js";
+import { initTRPC } from "@trpc/server";
+import { createExpressMiddleware } from "@trpc/server/adapters/express";
+import express from "express";
+import cors from "cors";
 
-import api from "spacetraders_api.js";
+import { appRouter as router } from "./trpc.js";
 
-const main = async () => {
-	
-};
+const app = express();
 
-main();
+app.use(cors())
+
+app.use(
+	'/trpc',
+	createExpressMiddleware({
+		router,
+	})
+)
+
+const port = 3000;
+app.listen(port, () => {
+	console.log(`Server is running on port ${port}`);
+});
+
