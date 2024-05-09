@@ -38,9 +38,9 @@ export const Register: React.FC<RegisterProps> = ({factions}) => {
 	const [selectedFaction, setSelectedFaction] = useState<Faction>(factions[0]);
 	
 	const utils = trpc.useUtils();
-	const {mutate:register} = trpc.register.useMutation({
+	const {mutate:register} = trpc.account.register.useMutation({
 		onSuccess: () => {
-			utils.account.invalidate();
+			utils.account.status.invalidate();
 		}
 	})
 

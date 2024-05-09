@@ -1,4 +1,4 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, NavLink } from "react-router-dom";
 import { trpc } from "./trpc";
 
 import { FullPageLoading } from "./loading_indicator";
@@ -14,14 +14,18 @@ const pages = [
 		path: "/ships",
 	},
 	{
+		name: "Contratos",
+		path: "/contracts",
+	},
+	{
 		name: "Mercado",
 		path: "/market",
 	},
 ]
 
 export const Root = () => {
-	const {data:money} = trpc.balance.useQuery();
-	const {data:account, isLoading} = trpc.account.useQuery();
+	const {data:money} = trpc.account.balance.useQuery();
+	const {data:account, isLoading} = trpc.account.status.useQuery();
 
 	if (isLoading || account === undefined) {
 		return <FullPageLoading />;
@@ -51,12 +55,19 @@ export const Root = () => {
 				<div className="flex flex-row flex-wrap items-baseline gap-5">
 					{
 						pages.map((page) => (
-							<Link to={page.path}>
+							<NavLink to={page.path}
+								className={({isActive}) => `
+									text-lg p-2 rounded-md w-20
+									${isActive ? "font-bold text-slate-700" : "font-medium text-slate-600"}
+								`}
+							>
 								{page.name}
-							</Link>
+							</NavLink>
 						))
 					}
-					<p className="text-lg p-2 bg-emerald-500 text-slate-100 rounded-md">${money}</p>
+					<p className="text-lg p-2 bg-emerald-500 text-slate-100 rounded-md">
+						${money?.toLocaleString('no')}
+					</p>
 				</div>
 			</div>
 			<Outlet />

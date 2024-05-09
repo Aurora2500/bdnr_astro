@@ -1,14 +1,15 @@
-import { router, publicProcedure } from "./trpc.js";
-import { manager } from "./manager.js";
-import { z } from "zod";
+import { router } from "./trpc.js";
+
+import { accountRouter } from "./routers/account.js";
+import { shipsRouter } from "./routers/ships.js";
+import { contractsRouter } from "./routers/contracts.js";
+import { inferRouterOutputs } from "@trpc/server";
 
 export const appRouter = router({
-	balance: publicProcedure.query(async () => await manager.balance()),
-	account: publicProcedure.query(async () => await manager.has_account()),
-	register: publicProcedure.input(z.object({
-		symbol: z.string(),
-		faction: z.string(),
-	})).mutation(async ({input: {symbol, faction}}) => await manager.register(symbol, faction)),
+	account: accountRouter,
+	ships: shipsRouter,
+	contracts: contractsRouter
 })
 
 export type AppRouter = typeof appRouter;
+export type InferOutput = inferRouterOutputs<AppRouter>;

@@ -1,6 +1,14 @@
 import got from "got";
 import { z } from "zod";
 
+import { account_objects } from "./manager.js";
+import {
+	FactionList,
+	AgentData,
+	Ships,
+	Contracts,
+} from "./api_types.js";
+
 const client = got.extend({
 	prefixUrl: "https://api.spacetraders.io/v2/",
 	headers: {
@@ -9,27 +17,6 @@ const client = got.extend({
 	responseType: "json",
 });
 
-const Paged = <T>(data: z.ZodType<T>) => z.object({
-	data: z.array(data),
-	meta: z.object({
-		total: z.number(),
-		page: z.number(),
-		limit: z.number(),
-	})
-});
-
-const DataWrapper = <T>(data: z.ZodType<T>) => z.object({
-	data,
-});
-
-const FactionList = Paged(z.object({
-	name: z.string(),
-	symbol: z.string(),
-	description: z.string(),
-	isRecruiting: z.boolean(),
-}));
-
-type FactionList = z.infer<typeof FactionList>;
 
 const list_factions = async (): Promise<FactionList["data"]> => {
 	const response = await client.get("factions");
@@ -55,16 +42,11 @@ const register_agent = async (symbol: string, faction: string) => {
 	return data.data.token;
 }
 
-const AgentData = DataWrapper(z.object({
-	accountId: z.string(),
-	credits: z.number(),
-	symbol: z.string(),
-	headquarters: z.string(),
-	startingFaction: z.string(),
-	shipCount: z.number(),
-}));
-
-const get_account = async (token: string) => {
+const get_account = async () => {
+	const token = account_objects.token;
+	if (token === null) {
+		return null;
+	}
 	const res = await client.get("my/agent", {
 		headers: {
 			"Authorization": `Bearer ${token}`
@@ -74,8 +56,43 @@ const get_account = async (token: string) => {
 	return data.data;
 }
 
+const list_ships = async () => {
+	const token = account_objects.token;
+	if (token === null) {
+		return null;
+	}
+	const res = await client.get("my/ships", {
+		headers: {
+			"Authorization": `Bearer ${token}`
+		}
+	})
+	const data = Ships.parse(res.body);
+	
+
+};
+
+const list_contracts = async () => {
+	const token = account_objects.token;
+	if (token === null) {
+		return null;
+	}
+	const res = await client.get("my/contracts", {
+		headers: {
+			"Authorization": `Bearer ${token}`
+		}
+	});
+	console.log(res.body);
+	const data = Contracts.safeParse(res.body);
+	if (data.success) return data.data.data;
+	console.log(JSON.stringify(data.error));
+	throw new Error(data.error.message)
+
+};
+
 export const api = {
 	list_factions,
 	register_agent,
 	get_account,
+	list_ships,
+	list_contracts
 };
