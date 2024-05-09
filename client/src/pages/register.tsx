@@ -14,7 +14,7 @@ type FactionCardProps = {
 }
 
 const FactionCard: React.FC<FactionCardProps> = ({faction, selected, selector}) => {
-	const {name, symbol, description, isRecruiting} = faction;
+	const {name, description, isRecruiting} = faction;
 	return (
 		<div
 			className={`border-slate-700 border-2 border-collapse ${selected ? "bg-slate-300" : "bg-slate-400"} p-2 rounded-md flex flex-col flex-wrap gap-2`}
