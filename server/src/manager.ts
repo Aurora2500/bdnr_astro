@@ -16,10 +16,21 @@ export const manager = {
 	},
 	balance: async () => {
 		const res = await redis_client.get("balance");
-		if (res === null) {
+		if (res !== null) {
+			return parseFloat(res);
+		}
+		const token = await redis_client.get(spacetraders_key);
+		if (token === null) {
 			return null;
 		}
-		return parseFloat(res);
-	}
+		const account = await api.get_account(token);
+		console.log(account);
+		redis_client.set("balance", account.credits.toString());
+		return account.credits;
+	},
 
+	register: async (symbol: string, faction: string) => {
+		const token = await api.register_agent(symbol, faction);
+		redis_client.set(spacetraders_key, token);
+	},
 }

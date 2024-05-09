@@ -9,12 +9,27 @@ import {
 import { Root } from "./Root";
 import { httpBatchLink } from "@trpc/react-query";
 
+import { Ships } from "./pages/ships";
+import { Dashboard } from "./pages/dashboard";
+import { Market } from "./pages/market";
+
 const router = createBrowserRouter([
 	{
 		path: "/",
 		element: <Root />,
 		children: [
-
+			{
+				path: "/",
+				element: <Dashboard />,
+			},
+			{
+				path: "/ships",
+				element: <Ships />,
+			},
+			{
+				path: "/market",
+				element: <Market />,
+			}
 		]
 	}
 ]);

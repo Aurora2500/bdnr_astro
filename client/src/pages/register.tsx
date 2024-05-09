@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { trpc } from "../trpc"
 
 type Faction = {
 	name: string
@@ -20,7 +21,7 @@ const FactionCard: React.FC<FactionCardProps> = ({faction, selected, selector}) 
 			className={`border-slate-700 border-2 border-collapse ${selected ? "bg-slate-300" : "bg-slate-400"} p-2 rounded-md flex flex-col flex-wrap gap-2`}
 			onClick={() => selector(faction)}
 		>
-			<p>{name}</p>
+			<p className="underline">{name}</p>
 			<p>{description}</p>
 			<p>{isRecruiting ? "Recruiting" : "Not recruiting"}</p>
 		</div>
@@ -33,7 +34,15 @@ type RegisterProps = {
 
 export const Register: React.FC<RegisterProps> = ({factions}) => {
 
+	const [symbol, setSymbol] = useState<string>("");
 	const [selectedFaction, setSelectedFaction] = useState<Faction>(factions[0]);
+	
+	const utils = trpc.useUtils();
+	const {mutate:register} = trpc.register.useMutation({
+		onSuccess: () => {
+			utils.account.invalidate();
+		}
+	})
 
 	return (
 		<div
@@ -46,7 +55,10 @@ export const Register: React.FC<RegisterProps> = ({factions}) => {
 				>
 					Registración
 				</h1>
-				<input/>
+				<input
+					value={symbol}
+					onChange={(e) => setSymbol(e.target.value)}
+				/>
 
 				<div
 					className="w-full h-4/5 flex flex-row flex-wrap
@@ -59,6 +71,11 @@ export const Register: React.FC<RegisterProps> = ({factions}) => {
 							selector={setSelectedFaction}
 						/>)}
 				</div>
+
+				<button
+					className="p-2 bg-slate-400 rounded-md"
+					onClick={() => register({symbol, faction: selectedFaction.symbol})}
+				>Registrarse</button>
 			</div>
 		</div>
 	)
