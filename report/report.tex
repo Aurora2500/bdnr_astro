@@ -89,7 +89,10 @@ y una capacitad limitada de carga y combustible,
 más aún, el precio de los diferentes productos en los mercados
 cambia dinámicamente con el tiempo segun la oferta y la demanda.
 Por lo tanto hay un complejo sistema de optimizar
-las acciones tomadas para maximizar los beneficios obtenidos.
+las acciones tomadas para maximizar los beneficios obtenidos,
+como donde comprar los productos y el combustible, adaptarse
+a los cambios de precios, y encontrar las mejores rutas para
+optimizar el uso de las naves para conseguir las mejores ganancias.
 
 \section{Analysis y selección de herramientas}
 
@@ -128,6 +131,27 @@ algo que puede ser util con el paso del tiempo ya que esta seguirá creciendo.
 \section{Productos finales obtenidos}
 
 \section{Trabajo futuro}
+
+Hay muchas rutas por las que se puede continuar el proyecto en el futuro.
+La principal sería integrar un sistema de mensajería para
+transformar la arquitectura a una de microservicios.
+Esto permitiría tener una buena separación entre lo que es
+el funcionamiento principal del programa y diferentes estrategias
+de análisis y optimización de las acciones a realizar, tal que estos podrían
+ser desarollados por diferentes equipos y ser intercambiados facilmente.
+El uso de las bases de datos no relacionales será muy útil en este caso,
+ya que permitirá a cada microservicio tener acceso a un repositorio central
+de los datos recolleccionados.
+
+En cuanto a mejoras más concretas,
+se puede subir la autonomía del programa para que pueda tomar decisiones
+más importantes como comprar nuevas naves por sí mismo, o incluso
+desarrollar estrategias de comercio más complejas.
+Esto podría llevar a un sistema de comercio con crecimiento
+exponencial, ya que cada nave tiene un coste fijo, pero
+puede generar beneficios que permitan comprar más naves,
+tal que si se obtienen naves automáticamente esto llevaría
+a un crecimiento exponencial de la flota.
 
 \section{Conclusiones}
 
