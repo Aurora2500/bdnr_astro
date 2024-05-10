@@ -124,11 +124,39 @@ algo que puede ser util con el paso del tiempo ya que esta seguirá creciendo.
 
 \section{Diseño del sistema}
 
+Actualmente el programa se divide en el cliente y el servidor.
+El cliente simplemente sirve como una interfaz para el usuario con el programa,
+y darle comandos a este.
+Pero el servidor es el núcleo del programa, ya que es el que 
+se encarga de interactuar con la API de SpaceTraders y con las bases de datos.
+
+El servidor esta construido encima de Node.js,
+tal que consiste en un bucle de eventos de hilo único.
+Es decir, hay una cola de tareas que se van ejecutando una a una,
+tal que cada una de estas tareas o eventos externos genera más tareas que se añaden a la cola.
+De esta forma, el servidor se divide conceptualmente en
+una parte autónoma y otra parte interfaz del cliente.
+También hay un objeto manager que es compartido entre las dos partes.
+De esta forma, se inicia una tarea que se encarga de dar acciones a las naves
+y de recollecionar datos de los mercados y de las naves.
+En parallelo, el cliente puede enviar peticiones que se añaden a la cola,
+y estas pueden hacer varias diferentes tareas como obtener datos para el cliente
+o realizar otras acciones por el usuario.
+
 \section{Incorporación de los datos a la BBDDNR}
 
-\section{Consultas realizadas para cumplir objetivos}
+Las bases de datos se usan como un repositorio de datos ambos necesarios para
+el funcionamiento del programa y para almacenar datos históricos.
+Esto se consigue mediante el objeto manager descrito previamente.
+Si se quiere realizar una acción o consulta,
+se interactua con este en vez de la API o la base de datos directamente.
+Tal que este se encarga de mirar si los datos estan en la base de datos, y si no
+pedirlos, y almacenarlos para futuras consultas.
+También se encarga de actualizar los datos en la base de datos si estos cambian, y
+hacer peticiones periodicas para tener un registro de los datos a lo largo del tiempo.
 
 \section{Productos finales obtenidos}
+
 
 \section{Trabajo futuro}
 
