@@ -4,4 +4,6 @@
 *.pdf
 *.toc
 *.xml
+*.bbl
+*.blg
 _minted-*
