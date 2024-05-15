@@ -82,3 +82,7 @@ export const Contracts = Paged(z.object({
 		}),
 	}),
 }));
+
+export const Systems = Paged(z.object({
+	
+}));

@@ -12,11 +12,11 @@ export const manager = {
 	account_status: async () => {
 		const has_account = await redis_client.get(spacetraders_key) !== null;
 		if (has_account) {
-			return {registered: true};
+			return {registered: true} as const;
 		}
 		else {
 			const factions = await api.list_factions();
-			return {registered: false, factions};
+			return {registered: false, factions} as const;
 		}
 	},
 	balance: async () => {

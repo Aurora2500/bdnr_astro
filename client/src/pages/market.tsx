@@ -5,4 +5,4 @@ export const Market = () => {
 			<h1>Market</h1>
 		</div>
 	);
-}
+};

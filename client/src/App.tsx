@@ -12,7 +12,8 @@ import { httpBatchLink } from "@trpc/react-query";
 import { Ships } from "./pages/ships";
 import { Dashboard } from "./pages/dashboard";
 import { Market } from "./pages/market";
-import { Contracts } from "./pages/contracts";
+import { Contracts, Contract,} from "./pages/contracts";
+import { Locations } from "./pages/locations";
 
 const router = createBrowserRouter([
 	{
@@ -34,6 +35,16 @@ const router = createBrowserRouter([
 			{
 				path: "/contracts",
 				element: <Contracts />,
+				children: [
+					{
+						path: ":id",
+						element: <Contract />,
+					}
+				]
+			},
+			{
+				path: "/loc",
+				element: <Locations />,
 			}
 		]
 	}

@@ -66,7 +66,6 @@ const list_ships = async () => {
 			"Authorization": `Bearer ${token}`
 		},
 	})
-	console.log(res.body)
 	const data = Ships.parse(res.body);
 	return data.data
 };

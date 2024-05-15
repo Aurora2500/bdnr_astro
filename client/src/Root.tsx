@@ -1,4 +1,4 @@
-import { Outlet, Link, NavLink } from "react-router-dom";
+import { Outlet, NavLink } from "react-router-dom";
 import { trpc } from "./trpc";
 
 import { FullPageLoading } from "./loading_indicator";
@@ -21,7 +21,11 @@ const pages = [
 		name: "Mercado",
 		path: "/market",
 	},
-]
+	{
+		name: "Locaciones",
+		path: "/loc",
+	},
+];
 
 export const Root = () => {
 	const {data:money} = trpc.account.balance.useQuery();
@@ -32,7 +36,7 @@ export const Root = () => {
 	}
 
 	if (account.registered === false) {
-		return <Register factions={(account as any).factions} />;
+		return <Register factions={account.factions} />;
 	}
 
 	return (
@@ -65,7 +69,7 @@ export const Root = () => {
 							</NavLink>
 						))
 					}
-					<p className="text-lg p-2 bg-emerald-500 text-slate-100 rounded-md">
+					<p className="text-lg p-2 bg-emerald-500 text-slate-100 rounded-md ml-5">
 						${money?.toLocaleString('no')}
 					</p>
 				</div>
@@ -73,4 +77,4 @@ export const Root = () => {
 			<Outlet />
 		</div>
 	);
-}
+};

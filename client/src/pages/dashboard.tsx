@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { trpc, type InferOutput } from "../trpc";
 import { normalize_symols } from "../util";
+import { NavLink } from "react-router-dom";
 
 type NotNull<T> = T extends null ? never : T;
 
@@ -27,7 +28,7 @@ const ShipCard: FC<ShipCardProps> = ({ ship }) => {
 				<span className="mr-5">{ship.nav.waypointSymbol}</span>
 			</p>
 		</div>
-	)
+	);
 };
 
 const ShipList = () => {
@@ -37,21 +38,22 @@ const ShipList = () => {
 		<div
 			className="flex flex-col bg-slate-200 p-2 rounded-lg w-60"
 		>
-			<h3
+			<NavLink
+				to="/ships"
 				className="text-2xl text-teal-700 font-semibold"
-			>Naves</h3>
+			>Naves</NavLink>
 			<div
 				className="flex flex-col gap-2"
 			>
-			{
-				ships?.map((ship) => (
-					<ShipCard ship={ship} />
-				)) 
-			}
+				{
+					ships?.map((ship) => (
+						<ShipCard ship={ship} />
+					)) 
+				}
 			</div>
 		</div>
 	);
-}
+};
 
 type ContractCardProps = {
 	contract: Contract;
@@ -66,7 +68,7 @@ const ContractCard: FC<ContractCardProps> = ({ contract }) => {
 			<p className="flex flex-row justify-between">
 				<span>Acceptar:</span>
 				<span className="mr-5">${contract.terms.payment.onAccepted.toLocaleString('no')}</span>
-				</p>
+			</p>
 			<p className="flex flex-row justify-between">
 				<span>Completar:</span>
 				<span className="mr-5">${contract.terms.payment.onFulfilled.toLocaleString('no')}</span>
@@ -80,8 +82,8 @@ const ContractCard: FC<ContractCardProps> = ({ contract }) => {
 				))
 			}
 		</div>
-	)
-}
+	);
+};
 
 const ContractsList = () => {
 	const { data:contracts } = trpc.contracts.list.useQuery();
@@ -99,8 +101,8 @@ const ContractsList = () => {
 				)) 
 			}
 		</div>
-	)
-}
+	);
+};
 
 export const Dashboard = () => {
 	return (
@@ -110,5 +112,5 @@ export const Dashboard = () => {
 			<ContractsList />
 			<ShipList />
 		</div>
-	)
-}
+	);
+};
