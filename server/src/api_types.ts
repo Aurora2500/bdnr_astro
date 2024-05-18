@@ -22,15 +22,17 @@ export const FactionList = Paged(z.object({
 
 export type FactionList = z.infer<typeof FactionList>;
 
-export const AgentData = DataWrapper(z.object({
+
+export const Agent = z.object({
 	accountId: z.string(),
 	credits: z.number(),
 	symbol: z.string(),
 	headquarters: z.string(),
 	startingFaction: z.string(),
 	shipCount: z.number(),
-}));
+});
 
+export const AgentData = DataWrapper(Agent);
 
 export const Ships = Paged(z.object({
 	symbol: z.string(),
@@ -65,7 +67,11 @@ export const Ships = Paged(z.object({
 	}),
 }));
 
-export const Contracts = Paged(z.object({
+export const RegistrationData = DataWrapper(z.object({
+	token: z.string(),
+}));
+
+export const Contract = z.object({
 	id: z.string(),
 	type: z.string(),
 	terms: z.object({
@@ -81,8 +87,36 @@ export const Contracts = Paged(z.object({
 			onFulfilled: z.number(),
 		}),
 	}),
-}));
+});
 
 export const Systems = Paged(z.object({
-	
+	symbol: z.string(),
+	sectorSymbol: z.string(),
+	type: z.string(),
+	x: z.number(),
+	y: z.number(),
+	waypoints: z.object({
+		symbol: z.string(),
+		type: z.string(),
+	}).array(),
+	factions: z.object({
+		symbol: z.string(),
+	}).array(),
+}));
+
+export const ContractList = Paged(Contract);
+
+export const AcceptContract = DataWrapper(z.object({
+	agent: Agent,
+	contract: Contract,
+}));
+
+export const WaypointList = Paged(z.object({
+	symbol: z.string(),
+	type: z.string(),
+	systemSymbol: z.string(),
+	x: z.number(),
+	y: z.number(),
+	traits: z.object({symbol: z.string()}).array(),
+	faction: z.object({symbol: z.string()}).optional(),
 }));

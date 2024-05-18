@@ -45,7 +45,12 @@ const router = createBrowserRouter([
 			{
 				path: "/loc",
 				element: <Locations />,
-			}
+			},
+			{
+				path: "/loc/:system",
+				element: <Locations />,
+			},
+			
 		]
 	}
 ]);

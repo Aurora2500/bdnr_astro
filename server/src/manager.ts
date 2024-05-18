@@ -1,8 +1,11 @@
 import { client as redis_client } from "./stores/redis_store.js"
-import { client as mongo_client } from "./stores/mongo_store.js"
+import { db as mongo_db } from "./stores/mongo_store.js"
 import { api } from "./spacetraders_api.js";
+import { EventEmitter } from "events";
 
 const spacetraders_key = "API_KEY"
+
+export const events = new EventEmitter();
 
 export const account_objects = {
 	token: await redis_client.get(spacetraders_key),
@@ -37,4 +40,10 @@ export const manager = {
 
 	list_ships: async () => await api.list_ships(),
 	list_contracts: async () => await api.list_contracts(),
+	list_systems: async () => await api.list_systems(),
+	get_system: async (system: string) => await api.get_system(system),
+
+	accept_contract: async () => {
+
+	}
 }

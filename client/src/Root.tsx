@@ -60,6 +60,7 @@ export const Root = () => {
 					{
 						pages.map((page) => (
 							<NavLink to={page.path}
+								key={page.path}
 								className={({isActive}) => `
 									text-lg p-2 rounded-md w-20
 									${isActive ? "font-bold text-slate-700" : "font-medium text-slate-600"}

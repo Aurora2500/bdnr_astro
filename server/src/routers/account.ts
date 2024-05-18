@@ -1,7 +1,8 @@
 import { router, publicProcedure } from "../trpc.js";
 
-import { manager } from "../manager.js";
+import { events, manager } from "../manager.js";
 import { z } from "zod";
+import { observable } from "@trpc/server/observable";
 
 export const accountRouter = router({
 	balance: publicProcedure.query(async () => await manager.balance()),
