@@ -19,12 +19,13 @@ const client = got.extend({
 		"Content-Type": "application/json",
 	},
 	responseType: "json",
+	throwHttpErrors: false,
 });
 
 const handle_error = <T>(parser: z.ZodType<T>, body: string): T => {
-const data = parser.safeParse(body);
-if (data.success) return data.data;
-throw new Error(data.error.message)
+	const data = parser.safeParse(body);
+	if (data.success) return data.data;
+	throw new Error(data.error.message)
 }
 
 export const api = {
@@ -57,6 +58,9 @@ export const api = {
 				"Authorization": `Bearer ${token}`
 			}
 		})
+		if (res.statusCode === 401) {
+			return null;
+		}
 		const data = AgentData.parse(res.body);
 		return data.data;
 	},
@@ -113,16 +117,9 @@ export const api = {
 	},
 
 	get_system: async (system: string) => {
-		const token = account_objects.token;
-		if (token === null) {
-			return null;
-		}
+		const res = await client.get(`systems/${system}/waypoints`);
 
-		const res = await client.get(`systems/${system}/waypoints`, {
-			headers: {
-				"Authorization": `Bearer ${token}`
-			}
-		});
+		console.log(res.body)
 
 		const data = WaypointList.safeParse(res.body);
 		if (data.success) return data.data.data;

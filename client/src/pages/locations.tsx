@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { trpc } from "../trpc";
 import { NavLink, useMatch } from "react-router-dom";
+import { normalize_symols } from "../util";
 
 export const Locations = () => {
 	const {data:systems} = trpc.locations.systems.useQuery();
@@ -65,19 +66,30 @@ export const Locations = () => {
 					<div>
 						<hr/>
 						{waypoints == null ?
-							null :
+							(
+								<div className="m-2">
+									Seleccione un sistema para ver los waypoints
+								</div>
+							) :
 							waypoints.map(waypoint => (
 								<Fragment key={waypoint.symbol}>
 									<div
-										className="flex flex-col justify-between"
+										className="flex flex-col justify-between p-2"
 									>
 										<div
 											className="text-lg font-medium"
 										>{waypoint.symbol}</div>
 										<span
 											className="text-lg font-medium"
-										>{waypoint.type}</span>
+										>{normalize_symols(waypoint.type)}</span>
 									</div>
+									{
+										waypoint.traits.some(trait => trait.symbol === "MARKETPLACE") && (
+											<div>
+												Mercado
+											</div>
+										)
+									}
 									<hr/>
 								</Fragment>
 							))
