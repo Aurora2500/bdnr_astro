@@ -29,6 +29,10 @@ const router = createBrowserRouter([
 				element: <Ships />,
 			},
 			{
+				path: "/ships/:ship",
+				element: <Ships />,
+			},
+			{
 				path: "/market",
 				element: <Market />,
 			},

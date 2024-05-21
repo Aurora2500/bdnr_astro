@@ -1,7 +1,9 @@
 import { client as redis_client } from "./stores/redis_store.js"
-import { db as mongo_db } from "./stores/mongo_store.js"
+import { Ship, ops as mongo_ops } from "./stores/mongo_store.js"
+import {assert_tables, assert_tables as cassandra_assert_tables } from "./stores/cassandra_store.js"
 import { api } from "./spacetraders_api.js";
 import { EventEmitter } from "events";
+import { Timestamp } from "mongodb";
 
 const spacetraders_key = "API_KEY"
 
@@ -44,7 +46,9 @@ export const manager = {
 	list_ships: async () => await api.list_ships(),
 	list_contracts: async () => await api.list_contracts(),
 	list_systems: async () => await api.list_systems(),
+
 	get_system: async (system: string) => await api.get_system(system),
+	get_ship: async (symbol: string) => await mongo_ops.get_ship(symbol),
 
 	accept_contract: async () => {
 	}
@@ -64,12 +68,42 @@ const status = async () => {
 	}
 }
 
+const assert_ships = async () => {
+	const known_ships = new Set(await mongo_ops.get_ship_symbols());
+	const current_ships = await api.list_ships();
+	if (current_ships === null) return;
+
+	const missing_ships = current_ships.flatMap((ship): Ship | never[] => {
+		if (known_ships.has(ship.symbol)) {
+			return [];
+		}
+		return {
+			...ship,
+			orders: [],
+			instructions: [],
+		};
+	})
+
+	if (missing_ships.length === 0) return;
+
+	await mongo_ops.add_ships(missing_ships);
+};
+
 const background_main = async () => {
+
+	await cassandra_assert_tables();
+
 	const acc_status = await status();
 	if (acc_status === "INVALID_KEY") {
 		await redis_client.del(spacetraders_key);
 		account_objects.token = null;
+		return;
 	}
+	if (acc_status === "NO_KEY") {
+		return;
+	}
+
+	await assert_ships();
 };
 
 background_main();

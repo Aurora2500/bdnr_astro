@@ -13,31 +13,48 @@ await client.connect();
 
 export const assert_tables = async() => {
 	await client.execute(`
-		CREATE TABLE IF NOT EXISTS market (
+		CREATE TABLE IF NOT EXISTS systems (
+			symbol text PRIMARY KEY,
+			type text,
+			waypoints set<text>,
+			factions set<text>,
+		)
+	`);
+
+	await client.execute(`
+		CREATE TABLE IF NOT EXISTS waypoints (
+			symbol text PRIMARY KEY,
+			type text,
+			system text,
+			traits set<text>,
+		)
+	`);
+
+	await client.execute(`
+		CREATE TABLE IF NOT EXISTS markets (
 			location text,
 			good text,
 			time timestamp,
 			price int,
 
 			PRIMARY KEY(location, good, time),
-			INDEX(time)
-
 		)
 	`);
+	await client.execute(`
+			CREATE INDEX IF NOT EXISTS ON markets (time)
+	`)
 
 	await client.execute(`
-		CREATE TABLE IF NOT EXISTS sale (
+		CREATE TABLE IF NOT EXISTS sales (
 			location text,
 			good text,
 			time timestamp,
 			quantity int,
 			price int,
-
 			ship text,
 
 			PRIMARY KEY(location, good, time),
 		)
 	`)
-
 
 }

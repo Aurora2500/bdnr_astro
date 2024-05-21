@@ -34,6 +34,14 @@ export const Agent = z.object({
 
 export const AgentData = DataWrapper(Agent);
 
+const SimpleWaypoint = z.object({
+	symbol: z.string(),
+	type: z.string(),
+	systemSymbol: z.string(),
+	x: z.number(),
+	y: z.number(),
+});
+
 export const Ships = Paged(z.object({
 	symbol: z.string(),
 	registration: z.object({
@@ -44,8 +52,14 @@ export const Ships = Paged(z.object({
 	nav: z.object({
 		systemSymbol: z.string(),
 		waypointSymbol: z.string(),
-		status: z.string(),
-		flightMode: z.string(),
+		route: z.object({
+			destination: SimpleWaypoint,
+			origin: SimpleWaypoint,
+			departureTime: z.string(),
+			arrival: z.string(),
+		}),
+		status: z.enum(["DOCKED", "IN_TRANSIT", "IN_ORBIT"]),
+		flightMode: z.enum(["DRIFT", "STEALTH", "CRUISE", "BURN"]),
 	}),
 	cargo: z.object({
 		capacity: z.number(),
